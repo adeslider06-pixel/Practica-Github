@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 09-10-2026 a las 21:51:16
+-- Tiempo de generación: 16-10-2026 a las 21:33:09
 -- Versión del servidor: 10.4.32-MariaDB
 -- Versión de PHP: 8.2.12
 
@@ -32,6 +32,17 @@ CREATE TABLE `bicicleta` (
   `estado` varchar(20) NOT NULL DEFAULT 'disponible',
   `codigo_estacion` varchar(10) NOT NULL
 ) ;
+
+--
+-- Volcado de datos para la tabla `bicicleta`
+--
+
+INSERT INTO `bicicleta` (`nro_serie`, `estado`, `codigo_estacion`) VALUES
+('A01', 'disponible', 'A1'),
+('A05', 'disponible', 'A1'),
+('A03', 'En mantenimiento', 'A1'),
+('A02', 'disponible', 'B1'),
+('A04', 'en uso', 'B1');
 
 --
 -- Disparadores `bicicleta`
@@ -90,8 +101,9 @@ CREATE TABLE `estacion` (
 --
 
 INSERT INTO `estacion` (`codigo_estacion`, `direccion`, `capacidad_maxima`) VALUES
-('A1', 'Hirigoyen 300', 20),
-('A2', 'Urquiza 620', 20);
+('A1', 'Av. San Martin 253', 20),
+('B1', 'Av. San Martin', 20),
+('B2', 'Av. Velazco 530', 20);
 
 -- --------------------------------------------------------
 
@@ -107,6 +119,16 @@ CREATE TABLE `mantenimientos` (
   `descripcion` text NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
+--
+-- Volcado de datos para la tabla `mantenimientos`
+--
+
+INSERT INTO `mantenimientos` (`id`, `codigo_estacion`, `legajo_operario`, `fecha`, `descripcion`) VALUES
+(3, 'A1', '25', '2026-10-16 14:00:00', 'Revisión general de la estación'),
+(4, 'A1', '25', '2026-10-02 14:00:00', 'Cambio de cubiertas'),
+(5, 'A2', '26', '2026-10-02 14:00:00', 'Limpieza de la estacion '),
+(6, 'A3', '26', '2026-10-06 14:00:00', 'Pintura de señalización.');
+
 -- --------------------------------------------------------
 
 --
@@ -117,6 +139,15 @@ CREATE TABLE `operarios` (
   `legajo` varchar(20) NOT NULL,
   `nombre` varchar(100) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Volcado de datos para la tabla `operarios`
+--
+
+INSERT INTO `operarios` (`legajo`, `nombre`) VALUES
+('25', 'Jose Gonzales '),
+('26', 'Pablo Romero '),
+('27', 'Juan Perez ');
 
 -- --------------------------------------------------------
 
@@ -135,7 +166,10 @@ CREATE TABLE `usuario` (
 
 INSERT INTO `usuario` (`dni`, `nombre`) VALUES
 ('35987456', 'Pedro Cerezo'),
-('39632741', 'Gaston Cerezo');
+('37987458', 'Nombre Apellido'),
+('39632741', 'Gaston Cerezo'),
+('43587912', 'Gaston Paez'),
+('50417867', 'Santiago Carril');
 
 -- --------------------------------------------------------
 
@@ -147,6 +181,15 @@ CREATE TABLE `usuario_medio_pago` (
   `dni` varchar(10) NOT NULL,
   `numero_tarjeta` varchar(20) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Volcado de datos para la tabla `usuario_medio_pago`
+--
+
+INSERT INTO `usuario_medio_pago` (`dni`, `numero_tarjeta`) VALUES
+('35987456', 'xxxxxxxxxxxxxxxxx'),
+('39632741', 'xxxxxxxxxxxxxxxxx'),
+('43587912', 'xxxxxxxxxxxxxxxxx');
 
 -- --------------------------------------------------------
 
@@ -161,6 +204,15 @@ CREATE TABLE `viaje` (
   `dni_usuario` varchar(10) NOT NULL,
   `numero_serie_bici` varchar(20) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Volcado de datos para la tabla `viaje`
+--
+
+INSERT INTO `viaje` (`id_viaje`, `fecha_inicio`, `fecha_fin`, `dni_usuario`, `numero_serie_bici`) VALUES
+(1, '2026-10-16 20:45:48', '2026-10-13 15:45:49', '35987456', ''),
+(5, '2026-10-02 15:00:00', '2026-10-02 15:45:49', '35987456', 'A01'),
+(6, '2026-10-02 15:00:00', '2026-10-02 15:45:49', '37987458', 'A01');
 
 --
 -- Índices para tablas volcadas
@@ -221,13 +273,13 @@ ALTER TABLE `viaje`
 -- AUTO_INCREMENT de la tabla `mantenimientos`
 --
 ALTER TABLE `mantenimientos`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 
 --
 -- AUTO_INCREMENT de la tabla `viaje`
 --
 ALTER TABLE `viaje`
-  MODIFY `id_viaje` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id_viaje` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 
 --
 -- Restricciones para tablas volcadas
